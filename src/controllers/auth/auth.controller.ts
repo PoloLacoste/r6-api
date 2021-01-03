@@ -1,7 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
-import { AuthPayload } from './auth-payload.decorator';
 import { AuthService } from './auth.service';
 
 export interface AuthRequest {
@@ -17,12 +15,6 @@ export interface AuthResponse {
 export class AuthController {
   
   constructor(private readonly authService: AuthService) {}
-
-  @Get()
-  @UseGuards(AuthGuard())
-  test(@AuthPayload() payload: any): string {
-    return payload;
-  }
 
   @Post()
   auth(@Body() body: AuthRequest): AuthResponse {
