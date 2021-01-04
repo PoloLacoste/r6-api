@@ -31,8 +31,9 @@ export class TasksService {
       });
     });
 
-    if(process.env.ENABLE_STATS_UPDATE || false) {
+    if(!!+process.env.ENABLE_STATS_UPDATE || false) {
       this.schedulerRegistry.addCronJob(this.cronJobName, this.cronJob);
+      this.cronJob.start();
     }
   }
 }
