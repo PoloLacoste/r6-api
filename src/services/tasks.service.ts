@@ -8,12 +8,14 @@ import { DatabaseService } from './database.service';
 export class TasksService {
 
   players: Array<string>;
+  platform: string;
 
   constructor(
     private readonly r6Service: R6Service,
     private readonly databaseService: DatabaseService
   ) {
     this.players = process.env.PLAYERS.split(',');
+    this.platform = process.env.PLATFORM || 'uplay';
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
