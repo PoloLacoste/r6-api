@@ -4,22 +4,18 @@ const R6API = require('r6api.js');
 @Injectable()
 export class R6Service {
 
-  private getR6Api(email: string, password: string) {
-    return new R6API(email, password);
+  r6Api = new R6API(process.env.EMAIl, process.env.PASSWORD);
+
+  async getId(platform: string, username: string): Promise<string> {
+    return await this.r6Api.getId(platform, username).then(el => el[0].id);
   }
 
-  async getId(email: string, password: string, platform: string, username: string): Promise<string> {
-    const r6api = this.getR6Api(email, password);
-    return await r6api.getId(platform, username).then(el => el[0].id);
+  async getStats(platform: string, id: string) {
+    return await this.r6Api.getStats(platform, id).then(el => el[0]);
   }
 
-  async getStats(email: string, password: string, platform: string, id: string) {
-    const r6api = this.getR6Api(email, password);
-    return await r6api.getStats(platform, id).then(el => el[0]);
-  }
-
-  async getStatsByUsername(email: string, password: string, platform: string, username: string) {
-    const id = await this.getId(email, password, platform, username);
-    return await this.getStats(email, password, platform, id);
+  async getStatsByUsername(platform: string, username: string) {
+    const id = await this.getId(platform, username);
+    return await this.getStats(platform, id);
   }
 }

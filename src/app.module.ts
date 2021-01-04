@@ -1,27 +1,21 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { R6Service } from './services/r6.service';
-import { AuthController } from './controllers/auth/auth.controller';
-import { AuthService } from './controllers/auth/auth.service';
-import { JwtStrategy } from './controllers/auth/jwt.strategy';
+import { TasksService } from './services/tasks.service';
 import { IdController } from './controllers/id/id.controller';
 import { StatsController } from './controllers/stats/stats.controller';
 
 @Module({
   imports: [
-    JwtModule.register({ secret: process.env.SECRET }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    ScheduleModule.forRoot()
   ],
   controllers: [
-    AuthController,
     IdController,
     StatsController,
   ],
   providers: [
-    AuthService,
-    JwtStrategy,
+    TasksService,
     R6Service,
   ],
 })
