@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { R6Service } from 'src/r6.service';
+import { R6Service } from 'src/services/r6.service';
 
 import { JwtPayload, Payload } from '../auth/jwt-payload.decorator';
 

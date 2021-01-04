@@ -1,7 +1,7 @@
 import { AuthGuard } from '@nestjs/passport';
 import { Body, Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 
-import { R6Service } from './../../r6.service';
+import { R6Service } from '../../services/r6.service';
 import { JwtPayload, Payload } from '../auth/jwt-payload.decorator';
 
 @Controller('id')
