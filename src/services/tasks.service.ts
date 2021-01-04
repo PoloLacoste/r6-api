@@ -16,7 +16,7 @@ export class TasksService {
     this.players = process.env.PLAYERS.split(',');
   }
 
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   saveStats() {
     this.players.forEach(async (playerName) => {
       const stats = await this.r6Service.getStatsByUsername('uplay', playerName);
