@@ -20,4 +20,4 @@ RUN npm install --only=production
 
 COPY --from=builder /app/dist ./
 
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]
