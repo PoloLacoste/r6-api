@@ -4,11 +4,7 @@ const R6API = require('r6api.js');
 @Injectable()
 export class R6Service {
 
-  r6Api: any;
-
-  constructor() {
-    this.r6Api = new R6API(process.env.EMAIl, process.env.PASSWORD);
-  }
+  r6Api = new R6API(process.env.EMAIl, process.env.PASSWORD);
 
   async getId(platform: string, username: string): Promise<string> {
 
