@@ -1,0 +1,23 @@
+version: '2.1'
+services:
+
+  arangodb:
+    restart: always
+    image: arangodb/arangodb
+    container_name: arangodb
+    ports:
+      - 8529:8529
+    environment: 
+      - ARANGO_ROOT_PASSWORD=password
+
+  r6-api:
+    restart: always 
+    build: 
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: r6-api
+    environment: 
+      - EMAIL=test
+      - PASSWORD=test
+      - SECRET=test
+      - PORT=3000
