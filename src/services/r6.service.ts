@@ -11,7 +11,7 @@ export class R6Service {
       this.r6Api = new R6API(process.env.EMAIl, process.env.PASSWORD);
     }
 
-    return this.getR6Api;
+    return this.r6Api;
   }
 
   async getId(platform: string, username: string): Promise<string> {
