@@ -14,7 +14,10 @@ FROM node:14-alpine as production
 
 WORKDIR /app
 
-COPY ./package.json ./
+COPY . .
+
+RUN npm install --only=production
+
 COPY --from=builder /app/dist ./
 
 CMD ["npm", "run", "start:prod"]
