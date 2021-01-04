@@ -2,10 +2,8 @@ FROM node:14-alpine as builder
 
 WORKDIR /usr/src/app
 
-COPY ./package.json ./
+COPY . .
 
 RUN npm install
-
-COPY . .
 
 CMD ["npm", "start"]
