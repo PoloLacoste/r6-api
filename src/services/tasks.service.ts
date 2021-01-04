@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { R6Service } from './r6.service';
+import { DatabaseService } from './database.service';
 
 @Injectable()
 export class TasksService {
@@ -9,7 +10,8 @@ export class TasksService {
   players: Array<string>;
 
   constructor(
-    private readonly r6Service: R6Service
+    private readonly r6Service: R6Service,
+    private readonly databaseService: DatabaseService
   ) {
     this.players = process.env.PLAYERS.split(',');
   }
@@ -17,7 +19,10 @@ export class TasksService {
   @Cron(CronExpression.EVERY_5_SECONDS)
   saveStats() {
     this.players.forEach(async (playerName) => {
-      console.log(await this.r6Service.getId('uplay', playerName));
+      const stats = await this.r6Service.getStatsByUsername('uplay', playerName);
+
+      stats.player = playerName;
+      await this.databaseService.saveStats(stats);
     });
   }
 }
