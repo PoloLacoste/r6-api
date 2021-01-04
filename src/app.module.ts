@@ -7,6 +7,7 @@ import { AuthController } from './controllers/auth/auth.controller';
 import { AuthService } from './controllers/auth/auth.service';
 import { JwtStrategy } from './controllers/auth/jwt.strategy';
 import { IdController } from './controllers/id/id.controller';
+import { StatsController } from './controllers/stats/stats.controller';
 
 @Module({
   imports: [
@@ -15,12 +16,13 @@ import { IdController } from './controllers/id/id.controller';
   ],
   controllers: [
     AuthController,
-    IdController
+    IdController,
+    StatsController,
   ],
   providers: [
     AuthService,
     JwtStrategy,
-    R6Service
+    R6Service,
   ],
 })
 export class AppModule { }
