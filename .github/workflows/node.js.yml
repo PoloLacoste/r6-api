@@ -6,6 +6,8 @@ name: R6-Api CI
 on:
   push:
     branches: [ main ]
+    tags:
+      - "v*.*.*"
 
 jobs:
   build:
