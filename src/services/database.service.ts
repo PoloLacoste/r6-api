@@ -58,6 +58,7 @@ export class DatabaseService {
       });
     }
     else {
+      stats.timestamp = timestamp;
       await this.collection.save(stats);
     }
   }
