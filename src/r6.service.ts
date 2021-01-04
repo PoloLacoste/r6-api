@@ -17,4 +17,9 @@ export class R6Service {
     const r6api = this.getR6Api(email, password);
     return await r6api.getStats(platform, id).then(el => el[0]);
   }
+
+  async getStatsByUsername(email: string, password: string, platform: string, username: string) {
+    const id = await this.getId(email, password, platform, username);
+    return await this.getStats(email, password, platform, id);
+  }
 }

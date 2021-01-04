@@ -9,13 +9,23 @@ export class StatsController {
   
   constructor(private readonly r6Service: R6Service) {}
 
-  @Get()
+  @Get('id')
   @UseGuards(AuthGuard())
-  async getId(
+  async getStats(
     @JwtPayload() payload: Payload, 
     @Query('platform') platform: string,
     @Query('id') id: string
   ): Promise<any> {
     return await this.r6Service.getStats(payload.email, payload.password, platform, id);
+  }
+
+  @Get('username')
+  @UseGuards(AuthGuard())
+  async getStatsByUsername(
+    @JwtPayload() payload: Payload, 
+    @Query('platform') platform: string,
+    @Query('username') username: string
+  ): Promise<any> {
+    return await this.r6Service.getStatsByUsername(payload.email, payload.password, platform, username);
   }
 }
