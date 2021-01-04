@@ -14,14 +14,16 @@ export class TasksService {
     private readonly r6Service: R6Service,
     private readonly databaseService: DatabaseService
   ) {
-    this.players = process.env.PLAYERS.split(',');
+    const players = process.env.PLAYERS || '';
+    this.players = players.split(',');
     this.platform = process.env.PLATFORM || 'uplay';
+
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(process.env.CRON || CronExpression.EVERY_MINUTE)
   saveStats() {
     this.players.forEach(async (playerName) => {
-      const stats = await this.r6Service.getStatsByUsername('uplay', playerName);
+      const stats = await this.r6Service.getStatsByUsername(this.platform, playerName);
 
       stats.player = playerName;
       await this.databaseService.saveStats(stats);
