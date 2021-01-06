@@ -23,11 +23,11 @@ export class DatabaseService {
     const exist = await this.collection.exists();
     if(!exist) {
       await this.collection.create();
-      await this.collection.ensureIndex({
-        type: 'persistent',
-        fields: ['player']
-      });
     }
+    await this.collection.ensureIndex({
+      type: 'persistent',
+      fields: ['player']
+    });
   }
 
   async getLastPlayerStats(player: string) {
