@@ -2,24 +2,23 @@ import { Controller, Get, Query } from '@nestjs/common';
 
 import { R6Service } from 'src/services/r6.service';
 
-@Controller('stats')
-export class StatsController {
-  
-  constructor(private readonly r6Service: R6Service) {}
+@Controller("level")
+export class LevelController {
+  constructor(private readonly r6Service: R6Service) { }
 
   @Get('id')
-  async getStatsById(
+  async getLevelById(
     @Query('platform') platform: string,
     @Query('id') id: string
   ): Promise<any> {
-    return await this.r6Service.getStatsById(platform, id);
+    return await this.r6Service.getLevelById(platform, id);
   }
 
   @Get('username')
-  async getStatsByUsername(
+  async getLevelByUsername(
     @Query('platform') platform: string,
     @Query('username') username: string
   ): Promise<any> {
-    return await this.r6Service.getStatsByUsername(platform, username);
+    return await this.r6Service.getLevelByUsername(platform, username);
   }
 }
