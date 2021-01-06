@@ -39,7 +39,7 @@ export class DatabaseService {
       SORT doc.timestamp DESC
       LIMIT 1
       return {
-        "id": doc.id,
+        "id": doc._id,
         "hash": doc.hash
       }
     `);
@@ -56,7 +56,7 @@ export class DatabaseService {
 
     const timestamp = new Date().getTime();
 
-    if(lastDoc.hash == hash) {
+    if(lastDoc?.hash == hash) {
       await this.collection.update(lastDoc.id, {
         timestamp
       });

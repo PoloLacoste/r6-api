@@ -37,7 +37,9 @@ export class R6Service {
   }
 
   async getRankById(platform: string, id: string): Promise<Array<PlayerRank>> {
-    return await this.r6Api.getRank(platform, id);
+    return await this.r6Api.getRank(platform, id, {
+      seasons: 'all'
+    });
   }
 
   async getRankByUsername(platform: string, username: string): Promise<Array<PlayerRank>> {
