@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { aql, Database } from 'arangojs';
-import { DocumentCollection } from 'arangojs/collection';
+const objectHash = require('object-hash');
+
+import { PlayerDoc } from 'src/models/player-doc';
 
 @Injectable()
 export class DatabaseService {
@@ -30,36 +32,39 @@ export class DatabaseService {
     });
   }
 
-  async getLastPlayerStats(player: string) {
+  async getLastPlayerDoc(player: string): Promise<any> {
     const query = await this.db.query(aql`
       FOR doc in ${this.collection}
       FILTER doc.player == ${player}
       SORT doc.timestamp DESC
       LIMIT 1
-      return doc
+      return {
+        "id": doc.id,
+        "hash": doc.hash
+      }
     `);
 
     const data = await query.all();
     return data.length > 0 ? data[0] : null;
   }
 
-  async saveStats(stats: any) {
+  async savePlayerDoc(playerDoc: PlayerDoc) {
 
-    const lastPlayerStats = await this.getLastPlayerStats(stats.player);
+    const lastDoc = await this.getLastPlayerDoc(playerDoc.player);
 
-    const pve = JSON.stringify(stats.pve) == JSON.stringify(lastPlayerStats?.pve);
-    const pvp = JSON.stringify(stats.pvp) == JSON.stringify(lastPlayerStats?.pvp);
+    const hash = objectHash(playerDoc);
 
     const timestamp = new Date().getTime();
 
-    if(pve && pvp) {
-      await this.collection.update(lastPlayerStats, {
+    if(lastDoc.hash == hash) {
+      await this.collection.update(lastDoc.id, {
         timestamp
       });
     }
     else {
-      stats.timestamp = timestamp;
-      await this.collection.save(stats);
+      playerDoc.timestamp = timestamp;
+      playerDoc.hash = hash;
+      await this.collection.save(playerDoc);
     }
   }
 }

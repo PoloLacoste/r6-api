@@ -24,10 +24,28 @@ export class TasksService {
 
     this.cronJob = new CronJob(this.cron, () => {
       this.players.forEach(async (playerName) => {
-        const stats = await this.r6Service.getStatsByUsername(this.platform, playerName);
+        const username = await this.r6Service.getUsername(this.platform, playerName);
+        const level = this.r6Service.getLevelById(this.platform, username.id);
+        const playtime = this.r6Service.getPlaytimeById(this.platform, username.id);
+        const rank = this.r6Service.getRankById(this.platform, username.id);
+        const stats = this.r6Service.getStatsByUsername(this.platform, username.id);
+
+        const result = await Promise.all([
+          username,
+          level,
+          playtime,
+          rank,
+          stats
+        ]);
   
-        stats.player = playerName;
-        await this.databaseService.saveStats(stats);
+        await this.databaseService.savePlayerDoc({
+          player: playerName,
+          level: result[1],
+          playtime: result[2],
+          rank: result[3],
+          stats: result[4],
+          username
+        });
       });
     });
 
