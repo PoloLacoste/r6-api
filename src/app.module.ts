@@ -1,29 +1,29 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
+import { RouterModule, Routes } from 'nest-router';
 
+
+import { PlatformModule } from './platform.module';
 import { R6Service } from './services/r6.service';
 import { TasksService } from './services/tasks.service';
 import { DatabaseService } from './services/database.service';
-import { IdController } from './controllers/id.controller';
-import { LevelController } from './controllers/level.controller';
-import { PlaytimeController } from './controllers/playtime.controller';
-import { RankController } from './controllers/rank.controller';
-import { StatsController } from './controllers/stats.controller';
 import { StatusController } from './controllers/status.controller';
-import { UsernameController } from './controllers/username.controller';
+
+const routes: Routes = [
+  {
+    path: '/:platform',
+    module: PlatformModule,
+  }
+];
 
 @Module({
   imports: [
-    ScheduleModule.forRoot()
+    RouterModule.forRoutes(routes),
+    ScheduleModule.forRoot(),
+    PlatformModule,
   ],
   controllers: [
-    IdController,
-    LevelController,
-    PlaytimeController,
-    RankController,
-    StatsController,
     StatusController,
-    UsernameController,
   ],
   providers: [
     DatabaseService,

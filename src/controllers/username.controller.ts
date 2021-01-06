@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { R6Service } from '../services/r6.service';
 
@@ -7,10 +7,10 @@ export class UsernameController {
 
   constructor(private readonly r6Service: R6Service) {}
 
-  @Get()
+  @Get(':id')
   async getId(
-    @Query('platform') platform: string,
-    @Query('id') id: string
+    @Param('platform') platform: string,
+    @Param('id') id: string
   ): Promise<string> {
     return await this.r6Service.getUsername(platform, id);
   }
