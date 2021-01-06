@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
 import { R6Service } from 'src/services/r6.service';
+import { PlayerRank } from 'src/models/player-rank';
 
 @Controller("rank")
 export class RankController {
@@ -10,7 +11,7 @@ export class RankController {
   async getRankById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<any> {
+  ): Promise<Array<PlayerRank>> {
     return await this.r6Service.getRankById(platform, id);
   }
 
@@ -18,7 +19,7 @@ export class RankController {
   async getRankByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<any> {
+  ): Promise<Array<PlayerRank>> {
     return await this.r6Service.getRankByUsername(platform, username);
   }
 }

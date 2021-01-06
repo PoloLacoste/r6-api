@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
 import { R6Service } from 'src/services/r6.service';
+import { PlayerLevel } from 'src/models/player-level';
 
 @Controller("level")
 export class LevelController {
@@ -10,7 +11,7 @@ export class LevelController {
   async getLevelById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<any> {
+  ): Promise<Array<PlayerLevel>> {
     return await this.r6Service.getLevelById(platform, id);
   }
 
@@ -18,7 +19,7 @@ export class LevelController {
   async getLevelByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<any> {
+  ): Promise<Array<PlayerLevel>> {
     return await this.r6Service.getLevelByUsername(platform, username);
   }
 }

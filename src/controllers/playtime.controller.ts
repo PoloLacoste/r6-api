@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
 import { R6Service } from 'src/services/r6.service';
+import { PlayerPlaytime } from 'src/models/player-playtime';
 
 @Controller('playtime')
 export class PlaytimeController {
@@ -11,7 +12,7 @@ export class PlaytimeController {
   async getPlaytimeById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<any> {
+  ): Promise<Array<PlayerPlaytime>> {
     return await this.r6Service.getPlaytimeById(platform, id);
   }
 
@@ -19,7 +20,7 @@ export class PlaytimeController {
   async getPlaytimeByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<any> {
+  ): Promise<Array<PlayerPlaytime>> {
     return await this.r6Service.getPlaytimeByUsername(platform, username);
   }
 }

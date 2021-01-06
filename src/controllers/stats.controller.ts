@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
 import { R6Service } from 'src/services/r6.service';
+import { PlayerStats } from 'src/models/player-stats';
 
 @Controller('stats')
 export class StatsController {
@@ -11,7 +12,7 @@ export class StatsController {
   async getStatsById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<any> {
+  ): Promise<PlayerStats> {
     return await this.r6Service.getStatsById(platform, id);
   }
 
@@ -19,7 +20,7 @@ export class StatsController {
   async getStatsByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<any> {
+  ): Promise<PlayerStats> {
     return await this.r6Service.getStatsByUsername(platform, username);
   }
 }
