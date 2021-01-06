@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 
-import { R6Service } from '../../services/r6.service';
+import { R6Service } from '../services/r6.service';
 
 @Controller('id')
 export class IdController {

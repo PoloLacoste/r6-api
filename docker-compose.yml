@@ -20,7 +20,7 @@ services:
       - EMAIL=test
       - PASSWORD=test
       - PORT=3000
-      - ARANGO_URL=http://localhost:8529
+      - ARANGO_URL=http://arangodb:8529
       - ARANGO_USERNAME=root
       - ARANGO_PASSWORD=password
     depends_on: 
