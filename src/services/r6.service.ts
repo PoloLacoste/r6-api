@@ -18,20 +18,22 @@ export class R6Service {
     return await this.r6Api.getId(platform, username).then(el => el[0].id);
   }
 
-  async getLevelById(platform: string, id: string): Promise<Array<PlayerLevel>> {
-    return await this.r6Api.getLevel(platform, id);
+  async getLevelById(platform: string, id: string): Promise<PlayerLevel | null> {
+    const result = await this.r6Api.getLevel(platform, id);
+    return result.length > 0 ? result[0] : null;
   }
 
-  async getLevelByUsername(platform: string, username: string): Promise<Array<PlayerLevel>> {
+  async getLevelByUsername(platform: string, username: string): Promise<PlayerLevel | null> {
     const id = await this.getId(platform, username);
     return await this.getLevelById(platform, id);
   }
 
-  async getPlaytimeById(platform: string, id: string): Promise<Array<PlayerPlaytime>> {
-    return await this.r6Api.getPlaytime(platform, id);
+  async getPlaytimeById(platform: string, id: string): Promise<PlayerPlaytime | null> {
+    const result = await this.r6Api.getPlaytime(platform, id);
+    return result.length > 0 ? result[0] : null;
   }
 
-  async getPlaytimeByUsername(platform: string, username: string): Promise<Array<PlayerPlaytime>> {
+  async getPlaytimeByUsername(platform: string, username: string): Promise<PlayerPlaytime | null> {
     const id = await this.getId(platform, username);
     return await this.getPlaytimeById(platform, id);
   }

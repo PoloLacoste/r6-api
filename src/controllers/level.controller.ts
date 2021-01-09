@@ -11,7 +11,7 @@ export class LevelController {
   async getLevelById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<Array<PlayerLevel>> {
+  ): Promise<PlayerLevel | null> {
     return await this.r6Service.getLevelById(platform, id);
   }
 
@@ -19,7 +19,7 @@ export class LevelController {
   async getLevelByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<Array<PlayerLevel>> {
+  ): Promise<PlayerLevel | null> {
     return await this.r6Service.getLevelByUsername(platform, username);
   }
 }

@@ -12,7 +12,7 @@ export class PlaytimeController {
   async getPlaytimeById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<Array<PlayerPlaytime>> {
+  ): Promise<PlayerPlaytime | null> {
     return await this.r6Service.getPlaytimeById(platform, id);
   }
 
@@ -20,7 +20,7 @@ export class PlaytimeController {
   async getPlaytimeByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<Array<PlayerPlaytime>> {
+  ): Promise<PlayerPlaytime | null> {
     return await this.r6Service.getPlaytimeByUsername(platform, username);
   }
 }

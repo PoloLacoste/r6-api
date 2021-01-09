@@ -8,8 +8,8 @@ export interface PlayerDoc {
     player: string;
     hash?: string;
     timestamp?: number;
-    level: Array<PlayerLevel>,
-    playtime: Array<PlayerPlaytime>
+    level: PlayerLevel,
+    playtime: PlayerPlaytime,
     rank: Array<PlayerRank>,
     stats: PlayerStats,
     username: PlayerUsername
