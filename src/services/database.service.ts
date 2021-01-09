@@ -1,42 +1,13 @@
-import { Injectable } from '@nestjs/common';
-const objectHash = require('object-hash');
+import { PlayerLevel } from 'src/models/player-level';
+import { PlayerPlaytime } from 'src/models/player-playtime';
+import { PlayerRank } from 'src/models/player-rank';
+import { PlayerStats } from 'src/models/player-stats';
+import { PlayerUsername } from 'src/models/player-username';
 
-import { PlayerDoc } from 'src/models/player-doc';
-import { R6Database } from 'src/databases/r6database.interface';
-import { MongoDatabase } from 'src/databases/mongo.database';
+export type R6Class = PlayerLevel | PlayerPlaytime | PlayerRank | PlayerStats | PlayerUsername;
 
-@Injectable()
-export class DatabaseService {
-
-  private db: R6Database;
-  private initialisation: Promise<void>;
-
-  constructor() {
-    this.db = new MongoDatabase();
-    this.initialisation = this.init();
-  }
-
-  private async init(): Promise<void> {
-    await this.db.init();
-  }
-
-  async savePlayerDoc(playerDoc: PlayerDoc): Promise<void> {
-
-    await this.initialisation;
-
-    const lastDoc = await this.db.getLast(playerDoc.player);
-
-    const hash = objectHash(playerDoc);
-
-    const timestamp = new Date().getTime();
-
-    if(lastDoc?.hash == hash) {
-      await this.db.update(lastDoc.id, timestamp);
-    }
-    else {
-      playerDoc.timestamp = timestamp;
-      playerDoc.hash = hash;
-      await this.db.insert(playerDoc);
-    }
-  }
+export abstract class DatabaseService {
+  abstract init(): Promise<void>;
+  abstract insert(data: R6Class): Promise<void>;
+  abstract update(id: string, data: R6Class): Promise<void>;
 }

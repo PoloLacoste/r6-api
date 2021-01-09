@@ -1,14 +1,19 @@
 import { Collection, Db, MongoClient } from 'mongodb';
 
-import { R6Database } from './r6database.interface';
-import { PlayerDoc } from 'src/models/player-doc';
-import { LastPlayerDoc } from 'src/models/last-player-doc';
+import { R6Class, DatabaseService } from 'src/services/database.service';
 
-export class MongoDatabase implements R6Database {
+export class MongoDatabaseService implements DatabaseService {
 
   private client: MongoClient;
   private db: Db;
-  private collection: Collection;
+
+  private collectionMapping = {
+    PlayerLevel: 'levels',
+    PlayerPlaytime: 'playtimes',
+    PlayerRank: 'ranks',
+    PlayerStats: 'stats',
+    PlayerUsername: 'usernames'
+  }
 
   async init(): Promise<void> {
     let url = process.env.MONGO_URL;
@@ -18,44 +23,24 @@ export class MongoDatabase implements R6Database {
     });
 
     this.db = this.client.db('r6');
-    this.collection = this.db.collection('stats');
   }
 
-  async getLast(player: string): Promise<LastPlayerDoc | null> {
-    const data = await this.collection.find({
-      player: player
-    })
-      .project({
-        _id: 1,
-        hash: 1
-      })
-      .sort({ timestamp: -1 })
-      .limit(1)
-      .toArray();
-
-    if (data.length > 0) {
-      let result = data[0]._source;
-      return {
-        id: result._id,
-        hash: result.hash
-      }
-    }
-
-    return null;
+  private getCollection(name: string): Collection {
+    return this.db.collection(this.collectionMapping[name]);
   }
 
-  async update(id: string, timestamp: number): Promise<void> {
-    await this.collection.updateOne({
+  async insert(data: R6Class): Promise<void> {
+    await this.getCollection(typeof data).insertOne(data);
+  }
+
+  async update(id: string, data: R6Class): Promise<void> {
+    await this.getCollection(typeof data).updateOne({
       _id: id
     }, {
       $set: {
-        timestamp
+        data
       }
     });
-  }
-
-  async insert(playerDoc: PlayerDoc): Promise<void> {
-    await this.collection.insertOne(playerDoc);
   }
 
 }
