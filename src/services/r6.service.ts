@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 const R6API = require('r6api.js');
 
-import { PlayerId } from 'src/models/player-id';
 import { PlayerLevel } from 'src/models/player-level';
 import { PlayerPlaytime } from 'src/models/player-playtime';
 import { PlayerRank } from 'src/models/player-rank';
 import { PlayerStats } from 'src/models/player-stats';
 import { PlayerUsername } from 'src/models/player-username';
 import { ServerStatus } from 'src/models/server-status';
+import { PlayerDoc } from 'src/models/player-doc';
 
 @Injectable()
 export class R6Service {
@@ -62,5 +62,26 @@ export class R6Service {
 
   async getUsername(platform: string, id: string): Promise<PlayerUsername> {
     return await this.r6Api.getUsername(platform, id);
+  }
+
+  async getAll(platform: string, username: string): Promise<PlayerDoc> {
+    const id = await this.getId(platform, username);
+
+    const result = await Promise.all([
+      this.getLevelById(platform, id),
+      this.getPlaytimeById(platform, id),
+      this.getRankById(platform, id),
+      this.getStatsById(platform, id),
+      this.getUsername(platform, id)
+    ]);
+
+    return {
+      player: username,
+      level: result[0],
+      playtime: result[1],
+      rank: result[2],
+      stats: result[3],
+      username: result[4]
+    }
   }
 }

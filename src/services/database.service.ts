@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { aql, Database } from 'arangojs';
+import { Collection, Db, MongoClient } from 'mongodb';
 const objectHash = require('object-hash');
 
 import { PlayerDoc } from 'src/models/player-doc';
@@ -7,48 +7,48 @@ import { PlayerDoc } from 'src/models/player-doc';
 @Injectable()
 export class DatabaseService {
 
-  db = new Database({
-    url: process.env.ARANGO_URL,
-    auth: {
-      username: process.env.ARANGO_USERNAME,
-      password: process.env.ARANGO_PASSWORD
-    }
-  });
-
-  collection = this.db.collection('stats');
+  private initialisation: Promise<void>;
+  private client: MongoClient;
+  private db: Db;
+  private collection: Collection;
 
   constructor() {
-    this.init();
+    this.initialisation = this.init();
   }
 
   async init(): Promise<void> {
-    const exist = await this.collection.exists();
-    if(!exist) {
-      await this.collection.create();
-    }
-    await this.collection.ensureIndex({
-      type: 'persistent',
-      fields: ['player']
+
+    let url = process.env.MONGO_URL;
+
+    this.client = await MongoClient.connect(url, {
+      useUnifiedTopology: true
     });
+
+    this.db = this.client.db('r6');
+    this.collection = this.db.collection('stats');
   }
 
   async getLastPlayerDoc(player: string): Promise<any> {
-    const query = await this.db.query(aql`
-      FOR doc in ${this.collection}
-      FILTER doc.player == ${player}
-      SORT doc.timestamp DESC
-      LIMIT 1
-      return {
-        "id": doc._id,
-        "hash": doc.hash
-      }
-    `);
 
-    const data = await query.all();
-    return data.length > 0 ? data[0] : null;
+    await this.initialisation;
+
+    const data = await this.collection.find({
+      player: player
+    })
+    .project({
+      _id: 1, 
+      hash: 1
+    })
+    .sort({timestamp: -1})
+    .limit(1)
+    .toArray();
+
+    return data.length > 0 ? data[0]._source : null;
   }
 
   async savePlayerDoc(playerDoc: PlayerDoc) {
+
+    await this.initialisation;
 
     const lastDoc = await this.getLastPlayerDoc(playerDoc.player);
 
@@ -57,14 +57,18 @@ export class DatabaseService {
     const timestamp = new Date().getTime();
 
     if(lastDoc?.hash == hash) {
-      await this.collection.update(lastDoc.id, {
-        timestamp
+      await this.collection.updateOne({
+        _id: lastDoc._id
+      }, {
+        $set: {
+          timestamp
+        }
       });
     }
     else {
       playerDoc.timestamp = timestamp;
       playerDoc.hash = hash;
-      await this.collection.save(playerDoc);
+      await this.collection.insertOne(playerDoc);
     }
   }
 }
