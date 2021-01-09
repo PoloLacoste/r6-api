@@ -10,7 +10,7 @@ export interface PlayerDoc {
     timestamp?: number;
     level: PlayerLevel,
     playtime: PlayerPlaytime,
-    rank: Array<PlayerRank>,
+    rank: PlayerRank,
     stats: PlayerStats,
     username: PlayerUsername
 }

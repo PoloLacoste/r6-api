@@ -38,13 +38,14 @@ export class R6Service {
     return await this.getPlaytimeById(platform, id);
   }
 
-  async getRankById(platform: string, id: string): Promise<Array<PlayerRank>> {
-    return await this.r6Api.getRank(platform, id, {
+  async getRankById(platform: string, id: string): Promise<PlayerRank | null> {
+    const result = await this.r6Api.getRank(platform, id, {
       seasons: 'all'
     });
+    return result.length > 0 ? result[0] : null;
   }
 
-  async getRankByUsername(platform: string, username: string): Promise<Array<PlayerRank>> {
+  async getRankByUsername(platform: string, username: string): Promise<PlayerRank | null> {
     const id = await this.getId(platform, username);
     return await this.getRankById(platform, id);
   }

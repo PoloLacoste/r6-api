@@ -11,7 +11,7 @@ export class RankController {
   async getRankById(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<Array<PlayerRank>> {
+  ): Promise<PlayerRank | null> {
     return await this.r6Service.getRankById(platform, id);
   }
 
@@ -19,7 +19,7 @@ export class RankController {
   async getRankByUsername(
     @Param('platform') platform: string,
     @Param('username') username: string
-  ): Promise<Array<PlayerRank>> {
+  ): Promise<PlayerRank | null> {
     return await this.r6Service.getRankByUsername(platform, username);
   }
 }
