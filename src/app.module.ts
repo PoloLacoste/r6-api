@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { RouterModule, Routes } from 'nest-router';
 
 
 import { PlatformModule } from './platform.module';
 import { R6Service } from './services/r6.service';
-import { TasksService } from './services/tasks.service';
 import { DatabaseService } from './services/database.service';
 import { StatusController } from './controllers/status.controller';
 
@@ -19,7 +17,6 @@ const routes: Routes = [
 @Module({
   imports: [
     RouterModule.forRoutes(routes),
-    ScheduleModule.forRoot(),
     PlatformModule,
   ],
   controllers: [
@@ -27,7 +24,6 @@ const routes: Routes = [
   ],
   providers: [
     DatabaseService,
-    TasksService,
     R6Service,
   ],
 })
