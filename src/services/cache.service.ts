@@ -31,8 +31,9 @@ export class CacheService {
     });
   }
 
-  async getExpiration(id: string): Promise<number> {
-    return this.getExpirationAsync(id);
+  async getExpiration(id: string): Promise<number | null> {
+    const result = await this.getExpirationAsync(id);
+    return result != null ? parseInt(result) : null;
   }
 
   async setExpiration(id: string, timestamp: number): Promise<void> {
@@ -40,10 +41,10 @@ export class CacheService {
   }
 
   async getId(username: string): Promise<string> {
-    return this.getUsernameIdAsync(username);
+    return this.getUsernameIdAsync(username) as string;
   }
 
   async setId(username: string, id: string): Promise<void> {
-    this.setUsernameIdAsync(username, id);
+    await this.setUsernameIdAsync(username, id);
   }
 }

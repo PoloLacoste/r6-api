@@ -8,7 +8,6 @@ import { PlaytimeController } from './controllers/playtime.controller';
 import { RankController } from './controllers/rank.controller';
 import { StatsController } from './controllers/stats.controller';
 import { UsernameController } from './controllers/username.controller';
-import { UpdateController } from './controllers/update.controller';
 
 @Module({
   imports: [
@@ -20,8 +19,7 @@ import { UpdateController } from './controllers/update.controller';
     PlaytimeController,
     RankController,
     StatsController,
-    UsernameController,
-    UpdateController
+    UsernameController
   ],
 })
 export class PlatformModule { }

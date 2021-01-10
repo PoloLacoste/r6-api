@@ -15,13 +15,13 @@ import { PlayerDoc } from 'src/models/player-doc';
 @Injectable()
 export class R6Service {
 
-  private static EXPIRATION = 60 * 1000; // 1 minute
+  private static DATA_EXPIRATION = 60 * 1000; // 1 minute
   private readonly r6Api = new R6API(process.env.EMAIL, process.env.PASSWORD);
 
   constructor(private readonly cacheService: CacheService,
     private readonly databaseService: DatabaseService) {
-    if (process.env.EXPIRATION != null) {
-      R6Service.EXPIRATION = parseInt(process.env.EXPIRATION);
+    if (process.env.DATA_EXPIRATION != null) {
+      R6Service.DATA_EXPIRATION = parseInt(process.env.DATA_EXPIRATION);
     }
   }
 
@@ -35,7 +35,7 @@ export class R6Service {
     const now = new Date().getTime();
     let cachedTimestamp = await this.cacheService.getExpiration(id) ?? -1;
 
-    const notExpired = cachedTimestamp + R6Service.EXPIRATION > now;
+    const notExpired = cachedTimestamp + R6Service.DATA_EXPIRATION > now;
 
     if(notExpired) {
       const result = await this.databaseService.get(collection, id);
