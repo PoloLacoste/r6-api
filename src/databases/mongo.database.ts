@@ -9,6 +9,8 @@ export class MongoDatabaseService implements DatabaseService {
 
   private readonly collections = ['level', 'playtime', 'rank', 'stats', 'username'];
 
+  private online = true;
+
   constructor() {
     this.init();
   }
@@ -16,10 +18,21 @@ export class MongoDatabaseService implements DatabaseService {
   async init(): Promise<void> {
     let url = process.env.MONGO_URL;
 
-    this.client = await MongoClient.connect(url, {
-      useUnifiedTopology: true
-    });
+    try {
+      this.client = await MongoClient.connect(url, {
+        useUnifiedTopology: true,
+        connectTimeoutMS: 4000,
+      });
 
+      this.initDb();
+    }
+    catch(e) {
+      this.online = false;
+      console.log(`Mongodb: ${e}`);
+    }
+  }
+
+  private async initDb(): Promise<void> {
     this.db = this.client.db('r6');
 
     let indexes = [];
@@ -57,5 +70,9 @@ export class MongoDatabaseService implements DatabaseService {
         data
       }
     });
+  }
+
+  isOnline(): boolean {
+    return this.online;
   }
 }

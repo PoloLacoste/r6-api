@@ -19,4 +19,5 @@ export abstract class DatabaseService {
   abstract get(collection: R6Collection, id: string): Promise<R6Class>;
   abstract insert(collection: R6Collection, data: R6Class): Promise<void>;
   abstract update(collection: R6Collection, id: string, data: R6Class): Promise<void>;
+  abstract isOnline(): boolean;
 }

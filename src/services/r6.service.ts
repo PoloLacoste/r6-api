@@ -27,8 +27,9 @@ export class R6Service {
 
   private async getCachedData(id: string, collection: R6Collection,
     getData: () => Promise<any | null>): Promise<any | null> {
-    
-    if(!+process.env.ENABLE_CACHING) {
+
+    if (!+process.env.ENABLE_CACHING || !this.cacheService.isOnline() ||
+      !this.databaseService.isOnline()) {
       return await getData();
     }
 
@@ -37,9 +38,9 @@ export class R6Service {
 
     const notExpired = cachedTimestamp + R6Service.DATA_EXPIRATION > now;
 
-    if(notExpired) {
+    if (notExpired) {
       const result = await this.databaseService.get(collection, id);
-      if(result != null) {
+      if (result != null) {
         return result;
       }
       cachedTimestamp = -1;
@@ -63,7 +64,7 @@ export class R6Service {
 
   async getId(platform: string, username: string): Promise<string> {
     const getId = (): Promise<string> => this.r6Api.getId(platform, username).then(el => el[0].id);
-    if(!+process.env.ENABLE_CACHING) {
+    if (!+process.env.ENABLE_CACHING || !this.cacheService.isOnline()) {
       return await getId();
     }
 

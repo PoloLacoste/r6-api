@@ -5,9 +5,7 @@ import { promisify } from "util";
 @Injectable()
 export class CacheService {
 
-  client = redis.createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379'
-  });
+  private client: any;
 
   private getExpirationAsync: any;
   private setExpirationAsync: any;
@@ -15,9 +13,19 @@ export class CacheService {
   private getUsernameIdAsync: any;
   private setUsernameIdAsync: any;
 
+  private online = true;
+
   constructor() {
-    this.client.on("error", function(error) {
-      console.error(error);
+
+    const client = this.client = redis.createClient({
+      url: process.env.REDIS_URL,
+      disable_resubscribing: true
+    });
+
+    this.client.on('error', (error) => {
+      this.online = false;
+      client.quit();
+      console.log(`Redis: ${error}`);
     });
 
     this.client.select('expiration', () => {
@@ -31,20 +39,48 @@ export class CacheService {
     });
   }
 
+  isOnline(): boolean {
+    return this.online;
+  }
+
   async getExpiration(id: string): Promise<number | null> {
-    const result = await this.getExpirationAsync(id);
-    return result != null ? parseInt(result) : null;
+    try {
+      const result = await this.getExpirationAsync(id);
+      return result != null ? parseInt(result) : null;
+    }
+    catch(e) {
+      console.log(e);
+    }
+
+    return null;
   }
 
   async setExpiration(id: string, timestamp: number): Promise<void> {
-    await this.setExpirationAsync(id, timestamp);
+    try {
+      await this.setExpirationAsync(id, timestamp);
+    }
+    catch(e) {
+      console.log(e);
+    }
   }
 
   async getId(username: string): Promise<string> {
-    return this.getUsernameIdAsync(username) as string;
+    try {
+      return this.getUsernameIdAsync(username) as string;
+    }
+    catch(e) {
+      console.log(e);
+    }
+
+    return null;
   }
 
   async setId(username: string, id: string): Promise<void> {
-    await this.setUsernameIdAsync(username, id);
+    try {
+      await this.setUsernameIdAsync(username, id);
+    }
+    catch(e) {
+      console.log(e);
+    }
   }
 }
