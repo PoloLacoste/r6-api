@@ -19,7 +19,11 @@ export class R6Service {
   private readonly r6Api = new R6API(process.env.EMAIL, process.env.PASSWORD);
 
   constructor(private readonly cacheService: CacheService,
-    private readonly databaseService: DatabaseService) { }
+    private readonly databaseService: DatabaseService) {
+    if(process.env.EXPIRATION != null) {
+      R6Service.EXPIRATION = parseInt(process.env.EXPIRATION);
+    }
+  }
 
   private async getCachedData(id: string, collection: R6Collection, 
     getData: () => Promise<any | null>): Promise<any | null> {
