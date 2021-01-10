@@ -12,7 +12,7 @@ export class UsernameController {
   async getUsername(
     @Param('platform') platform: string,
     @Param('id') id: string
-  ): Promise<PlayerUsername> {
+  ): Promise<PlayerUsername | null> {
     return await this.r6Service.getUsername(platform, id);
   }
 }

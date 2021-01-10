@@ -1,18 +1,16 @@
 import { Collection, Db, MongoClient } from 'mongodb';
 
-import { R6Class, DatabaseService } from 'src/services/database.service';
+import { R6Class, DatabaseService, R6Collection } from 'src/services/database.service';
 
 export class MongoDatabaseService implements DatabaseService {
 
   private client: MongoClient;
   private db: Db;
 
-  private collectionMapping = {
-    PlayerLevel: 'levels',
-    PlayerPlaytime: 'playtimes',
-    PlayerRank: 'ranks',
-    PlayerStats: 'stats',
-    PlayerUsername: 'usernames'
+  private readonly collections = ['level', 'playtime', 'rank', 'stats', 'username'];
+
+  constructor() {
+    this.init();
   }
 
   async init(): Promise<void> {
@@ -23,18 +21,26 @@ export class MongoDatabaseService implements DatabaseService {
     });
 
     this.db = this.client.db('r6');
+
+    let indexes = [];
+    
+    for(let name of this.collections) {
+      indexes.push(this.db.createIndex(name, 'id'));
+    }
+
+    await Promise.all(indexes);
   }
 
-  private getCollection(name: string): Collection {
-    return this.db.collection(this.collectionMapping[name]);
+  private getCollection(name: R6Collection): Collection {
+    return this.db.collection(name.toString());
   }
 
-  async insert(data: R6Class): Promise<void> {
-    await this.getCollection(typeof data).insertOne(data);
+  async insert(name: R6Collection, data: R6Class): Promise<void> {
+    await this.getCollection(name).insertOne(data);
   }
 
-  async update(id: string, data: R6Class): Promise<void> {
-    await this.getCollection(typeof data).updateOne({
+  async update(name: R6Collection, id: string, data: R6Class): Promise<void> {
+    await this.getCollection(name).updateOne({
       _id: id
     }, {
       $set: {

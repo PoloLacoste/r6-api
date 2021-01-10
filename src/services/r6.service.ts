@@ -40,7 +40,8 @@ export class R6Service {
 
   async getRankById(platform: string, id: string): Promise<PlayerRank | null> {
     const result = await this.r6Api.getRank(platform, id, {
-      seasons: 'all'
+      seasons: 'all',
+      regions: ['emea']
     });
     return result.length > 0 ? result[0] : null;
   }
@@ -63,8 +64,9 @@ export class R6Service {
     return await this.r6Api.getStatus();
   }
 
-  async getUsername(platform: string, id: string): Promise<PlayerUsername> {
-    return await this.r6Api.getUsername(platform, id);
+  async getUsername(platform: string, id: string): Promise<PlayerUsername | null> {
+    const result = await this.r6Api.getUsername(platform, id);
+    return result.length > 0 ? result[0] : null;
   }
 
   async getAll(platform: string, username: string): Promise<PlayerDoc> {
