@@ -27,6 +27,11 @@ export class R6Service {
 
   private async getCachedData(id: string, collection: R6Collection,
     getData: () => Promise<any | null>): Promise<any | null> {
+    
+    if(!+process.env.ENABLE_CACHING) {
+      return await getData();
+    }
+    
     let now = new Date().getTime();
     let cachedTimestamp = await this.cacheService.getExpiration(id) ?? 0;
     if (cachedTimestamp + R6Service.EXPIRATION < now) {
