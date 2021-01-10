@@ -36,13 +36,17 @@ export class MongoDatabaseService implements DatabaseService {
   }
 
   async get(name: R6Collection, id: string): Promise<R6Class> {
-    return await this.getCollection(name).findOne({
+    const data = await this.getCollection(name).findOne({
       id
     });
+    delete data._id;
+    return data;
   }
 
   async insert(name: R6Collection, data: R6Class): Promise<void> {
     await this.getCollection(name).insertOne(data);
+    const result = data as any;
+    delete result._id;
   }
 
   async update(name: R6Collection, id: string, data: R6Class): Promise<void> {
@@ -54,5 +58,4 @@ export class MongoDatabaseService implements DatabaseService {
       }
     });
   }
-
 }
