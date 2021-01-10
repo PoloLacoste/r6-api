@@ -30,6 +30,7 @@
     "nest-router": "^1.0.9",
     "object-hash": "^2.0.3",
     "r6api.js": "^1.6.0",
+    "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3"

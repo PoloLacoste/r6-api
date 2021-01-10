@@ -28,7 +28,7 @@ export class R6Service {
   private async getCachedData(id: string, collection: R6Collection,
     getData: () => Promise<any | null>): Promise<any | null> {
     let now = new Date().getTime();
-    let cachedTimestamp = this.cacheService.getExpiration(id) ?? 0;
+    let cachedTimestamp = await this.cacheService.getExpiration(id) ?? 0;
     if (cachedTimestamp + R6Service.EXPIRATION < now) {
       let data = await getData();
       if (cachedTimestamp == 0) {
@@ -36,7 +36,7 @@ export class R6Service {
       } else {
         await this.databaseService.update(collection, id, data);
       }
-      this.cacheService.setExpiration(id, now);
+      await this.cacheService.setExpiration(id, now);
       return data;
     } else {
       return await this.databaseService.get(collection, id);
@@ -50,12 +50,12 @@ export class R6Service {
 
   async getId(platform: string, username: string): Promise<string> {
     const platformUsername = `${platform}/${username}`;
-    const cachedId = this.cacheService.getId(platformUsername);
+    const cachedId = await this.cacheService.getId(platformUsername);
     if (cachedId != null) {
       return cachedId;
     }
     const id = await this.r6Api.getId(platform, username).then(el => el[0].id);
-    this.cacheService.setId(platformUsername, id);
+    await this.cacheService.setId(platformUsername, id);
     return id;
   }
 
