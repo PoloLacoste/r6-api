@@ -3,13 +3,22 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class CacheService {
 
-  private readonly cache = new Map<string, number>();
+  private readonly expirations = new Map<string, number>();
+  private readonly usernameIds = new Map<string, string>();
 
-  getCache(id: string): number {
-    return this.cache.get(id);
+  getExpiration(id: string): number {
+    return this.expirations.get(id);
   }
 
-  setCache(id: string, timestamp: number) {
-    this.cache.set(id, timestamp);
+  setExpiration(id: string, timestamp: number): void {
+    this.expirations.set(id, timestamp);
+  }
+
+  getId(username: string): string {
+    return this.usernameIds.get(username);
+  }
+
+  setId(username: string, id: string): void {
+    this.usernameIds.set(username, id);
   }
 }

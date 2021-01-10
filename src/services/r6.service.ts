@@ -20,23 +20,23 @@ export class R6Service {
 
   constructor(private readonly cacheService: CacheService,
     private readonly databaseService: DatabaseService) {
-    if(process.env.EXPIRATION != null) {
+    if (process.env.EXPIRATION != null) {
       R6Service.EXPIRATION = parseInt(process.env.EXPIRATION);
     }
   }
 
-  private async getCachedData(id: string, collection: R6Collection, 
+  private async getCachedData(id: string, collection: R6Collection,
     getData: () => Promise<any | null>): Promise<any | null> {
     let now = new Date().getTime();
-    let cachedTimestamp = this.cacheService.getCache(id) ?? 0;
-    if(cachedTimestamp + R6Service.EXPIRATION < now) {
+    let cachedTimestamp = this.cacheService.getExpiration(id) ?? 0;
+    if (cachedTimestamp + R6Service.EXPIRATION < now) {
       let data = await getData();
-      if(cachedTimestamp == 0) {
+      if (cachedTimestamp == 0) {
         await this.databaseService.insert(collection, data);
       } else {
         await this.databaseService.update(collection, id, data);
       }
-      this.cacheService.setCache(id, now);
+      this.cacheService.setExpiration(id, now);
       return data;
     } else {
       return await this.databaseService.get(collection, id);
@@ -49,13 +49,20 @@ export class R6Service {
   }
 
   async getId(platform: string, username: string): Promise<string> {
-    return await this.r6Api.getId(platform, username).then(el => el[0].id);
+    const platformUsername = `${platform}/${username}`;
+    const cachedId = this.cacheService.getId(platformUsername);
+    if (cachedId != null) {
+      return cachedId;
+    }
+    const id = await this.r6Api.getId(platform, username).then(el => el[0].id);
+    this.cacheService.setId(platformUsername, id);
+    return id;
   }
 
 
   async getLevelById(platform: string, id: string): Promise<PlayerLevel | null> {
     return await this.getCachedData(id, R6Collection.level, async () => {
-      return this.getFirstResult(this.r6Api.getLevel(platform, id));
+      return this.getFirstResult(() => this.r6Api.getLevel(platform, id));
     });
   }
 
@@ -66,7 +73,7 @@ export class R6Service {
 
   async getPlaytimeById(platform: string, id: string): Promise<PlayerPlaytime | null> {
     return await this.getCachedData(id, R6Collection.playtime, async () => {
-      return this.getFirstResult(this.r6Api.getPlaytime(platform, id));
+      return this.getFirstResult(() => this.r6Api.getPlaytime(platform, id));
     });
   }
 
@@ -77,7 +84,7 @@ export class R6Service {
 
   async getRankById(platform: string, id: string): Promise<PlayerRank | null> {
     return await this.getCachedData(id, R6Collection.rank, async () => {
-      return this.getFirstResult(this.r6Api.getRank(platform, id, {
+      return this.getFirstResult(() => this.r6Api.getRank(platform, id, {
         seasons: 'all',
         regions: ['emea']
       }));
@@ -90,7 +97,7 @@ export class R6Service {
   }
 
   async getStatsById(platform: string, id: string): Promise<PlayerStats> {
-    return await this.getCachedData(id, R6Collection.username, async () => {
+    return await this.getCachedData(id, R6Collection.stats, async () => {
       return this.r6Api.getStats(platform, id).then(el => el[0])
     });
   }
@@ -101,12 +108,12 @@ export class R6Service {
   }
 
   async getServersStatus(): Promise<ServerStatus> {
-    return await this.r6Api.getStatus();  
+    return await this.r6Api.getStatus();
   }
 
   async getUsername(platform: string, id: string): Promise<PlayerUsername | null> {
     return await this.getCachedData(id, R6Collection.username, async () => {
-      return this.getFirstResult(this.r6Api.getUsername(platform, id));
+      return this.getFirstResult(() => this.r6Api.getUsername(platform, id));
     });
   }
 
