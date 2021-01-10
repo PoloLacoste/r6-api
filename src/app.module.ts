@@ -3,7 +3,8 @@ import { RouterModule, Routes } from 'nest-router';
 
 
 import { PlatformModule } from './platform.module';
-import { R6Service } from './services/r6.service';
+import { ServicesModule } from './services/services.module';
+
 import { StatusController } from './controllers/status.controller';
 
 const routes: Routes = [
@@ -17,12 +18,10 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoutes(routes),
     PlatformModule,
+    ServicesModule
   ],
   controllers: [
     StatusController,
-  ],
-  providers: [
-    R6Service,
   ],
 })
 export class AppModule { }

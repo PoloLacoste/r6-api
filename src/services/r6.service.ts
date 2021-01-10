@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 const R6API = require('r6api.js');
 
+import { CacheService } from './cache.service';
+import { DatabaseService, R6Class, R6Collection } from './database.service';
+
 import { PlayerLevel } from 'src/models/player-level';
 import { PlayerPlaytime } from 'src/models/player-playtime';
 import { PlayerRank } from 'src/models/player-rank';
@@ -12,15 +15,44 @@ import { PlayerDoc } from 'src/models/player-doc';
 @Injectable()
 export class R6Service {
 
-  r6Api = new R6API(process.env.EMAIL, process.env.PASSWORD);
+  private static EXPIRATION = 60 * 1000; // 1 minute
+  private readonly r6Api = new R6API(process.env.EMAIL, process.env.PASSWORD);
+
+  constructor(private readonly cacheService: CacheService,
+    private readonly databaseService: DatabaseService) { }
+
+  private async getCachedData(id: string, collection: R6Collection, 
+    getData: () => Promise<any | null>): Promise<any | null> {
+    let now = new Date().getTime();
+    let cachedTimestamp = this.cacheService.getCache(id) ?? 0;
+    if(cachedTimestamp + R6Service.EXPIRATION < now) {
+      let data = await getData();
+      if(cachedTimestamp == 0) {
+        await this.databaseService.insert(collection, data);
+      } else {
+        await this.databaseService.update(collection, id, data);
+      }
+      this.cacheService.setCache(id, now);
+      return data;
+    } else {
+      return await this.databaseService.get(collection, id);
+    }
+  }
+
+  private async getFirstResult<T>(getData: () => Promise<any | null>): Promise<T> {
+    const result = await getData();
+    return result.length > 0 ? result[0] : null;
+  }
 
   async getId(platform: string, username: string): Promise<string> {
     return await this.r6Api.getId(platform, username).then(el => el[0].id);
   }
 
+
   async getLevelById(platform: string, id: string): Promise<PlayerLevel | null> {
-    const result = await this.r6Api.getLevel(platform, id);
-    return result.length > 0 ? result[0] : null;
+    return await this.getCachedData(id, R6Collection.level, async () => {
+      return this.getFirstResult(this.r6Api.getLevel(platform, id));
+    });
   }
 
   async getLevelByUsername(platform: string, username: string): Promise<PlayerLevel | null> {
@@ -29,8 +61,9 @@ export class R6Service {
   }
 
   async getPlaytimeById(platform: string, id: string): Promise<PlayerPlaytime | null> {
-    const result = await this.r6Api.getPlaytime(platform, id);
-    return result.length > 0 ? result[0] : null;
+    return await this.getCachedData(id, R6Collection.playtime, async () => {
+      return this.getFirstResult(this.r6Api.getPlaytime(platform, id));
+    });
   }
 
   async getPlaytimeByUsername(platform: string, username: string): Promise<PlayerPlaytime | null> {
@@ -39,11 +72,12 @@ export class R6Service {
   }
 
   async getRankById(platform: string, id: string): Promise<PlayerRank | null> {
-    const result = await this.r6Api.getRank(platform, id, {
-      seasons: 'all',
-      regions: ['emea']
+    return await this.getCachedData(id, R6Collection.rank, async () => {
+      return this.getFirstResult(this.r6Api.getRank(platform, id, {
+        seasons: 'all',
+        regions: ['emea']
+      }));
     });
-    return result.length > 0 ? result[0] : null;
   }
 
   async getRankByUsername(platform: string, username: string): Promise<PlayerRank | null> {
@@ -52,7 +86,9 @@ export class R6Service {
   }
 
   async getStatsById(platform: string, id: string): Promise<PlayerStats> {
-    return await this.r6Api.getStats(platform, id).then(el => el[0]);
+    return await this.getCachedData(id, R6Collection.username, async () => {
+      return this.r6Api.getStats(platform, id).then(el => el[0])
+    });
   }
 
   async getStatsByUsername(platform: string, username: string): Promise<PlayerStats> {
@@ -61,12 +97,13 @@ export class R6Service {
   }
 
   async getServersStatus(): Promise<ServerStatus> {
-    return await this.r6Api.getStatus();
+    return await this.r6Api.getStatus();  
   }
 
   async getUsername(platform: string, id: string): Promise<PlayerUsername | null> {
-    const result = await this.r6Api.getUsername(platform, id);
-    return result.length > 0 ? result[0] : null;
+    return await this.getCachedData(id, R6Collection.username, async () => {
+      return this.getFirstResult(this.r6Api.getUsername(platform, id));
+    });
   }
 
   async getAll(platform: string, username: string): Promise<PlayerDoc> {

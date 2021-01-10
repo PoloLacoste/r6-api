@@ -35,6 +35,12 @@ export class MongoDatabaseService implements DatabaseService {
     return this.db.collection(name.toString());
   }
 
+  async get(name: R6Collection, id: string): Promise<R6Class> {
+    return await this.getCollection(name).findOne({
+      id
+    });
+  }
+
   async insert(name: R6Collection, data: R6Class): Promise<void> {
     await this.getCollection(name).insertOne(data);
   }
