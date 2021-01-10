@@ -35,11 +35,11 @@ export class MongoDatabaseService implements DatabaseService {
     return this.db.collection(name.toString());
   }
 
-  async get(name: R6Collection, id: string): Promise<R6Class> {
+  async get(name: R6Collection, id: string): Promise<R6Class | null> {
     const data = await this.getCollection(name).findOne({
       id
     });
-    delete data._id;
+    delete data?._id;
     return data;
   }
 

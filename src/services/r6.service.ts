@@ -31,21 +31,29 @@ export class R6Service {
     if(!+process.env.ENABLE_CACHING) {
       return await getData();
     }
-    
-    let now = new Date().getTime();
-    let cachedTimestamp = await this.cacheService.getExpiration(id) ?? 0;
-    if (cachedTimestamp + R6Service.EXPIRATION < now) {
-      let data = await getData();
-      if (cachedTimestamp == 0) {
-        await this.databaseService.insert(collection, data);
-      } else {
-        await this.databaseService.update(collection, id, data);
+
+    const now = new Date().getTime();
+    let cachedTimestamp = await this.cacheService.getExpiration(id) ?? -1;
+
+    const notExpired = cachedTimestamp + R6Service.EXPIRATION > now;
+
+    if(notExpired) {
+      const result = await this.databaseService.get(collection, id);
+      if(result != null) {
+        return result;
       }
-      await this.cacheService.setExpiration(id, now);
-      return data;
-    } else {
-      return await this.databaseService.get(collection, id);
+      cachedTimestamp = -1;
     }
+
+    // caching if data is expired or not in the database
+    let data = await getData();
+    if (cachedTimestamp == -1) {
+      await this.databaseService.insert(collection, data);
+    } else {
+      await this.databaseService.update(collection, id, data);
+    }
+    await this.cacheService.setExpiration(id, now);
+    return data;
   }
 
   private async getFirstResult<T>(getData: () => Promise<any | null>): Promise<T> {
@@ -54,12 +62,17 @@ export class R6Service {
   }
 
   async getId(platform: string, username: string): Promise<string> {
+    const getId = (): Promise<string> => this.r6Api.getId(platform, username).then(el => el[0].id);
+    if(!+process.env.ENABLE_CACHING) {
+      return await getId();
+    }
+
     const platformUsername = `${platform}/${username}`;
     const cachedId = await this.cacheService.getId(platformUsername);
     if (cachedId != null) {
       return cachedId;
     }
-    const id = await this.r6Api.getId(platform, username).then(el => el[0].id);
+    const id = await getId();
     await this.cacheService.setId(platformUsername, id);
     return id;
   }
