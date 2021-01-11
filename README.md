@@ -1,5 +1,8 @@
 # Rainbow Six Siege API
 
+REST API version of [r6api.js](https://github.com/danielwerg/r6api.js) using Docker.
+The data is cached (expire after 1 minute) if you are using redis and mongodb.
+
 Docker image avalaible at [r6-api](https://hub.docker.com/repository/docker/pololacoste/r6-api).
 
 ## Docker
