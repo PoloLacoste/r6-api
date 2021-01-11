@@ -1,27 +1,35 @@
 version: '2.1'
 services:
 
-  arangodb:
+  mongo:
+    image: mongo:4.4.3-bionic
+    container_name: mongo
     restart: always
-    image: arangodb/arangodb
-    container_name: arangodb
-    ports:
-      - 8529:8529
-    environment: 
-      - ARANGO_ROOT_PASSWORD=password
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: r6
+  
+  redis:
+    image: redis:6.0.9-alpine
+    container_name: redis
+    restart: always
 
   r6-api:
     restart: always 
-    build: 
-      context: ./
-      dockerfile: ./Dockerfile
+    image: pololacoste/r6-api
     container_name: r6-api
     environment: 
-      - EMAIL=test
-      - PASSWORD=test
+      - EMAIL=${EMAIL}
+      - PASSWORD=${PASSWORD}
       - PORT=3000
-      - ARANGO_URL=http://arangodb:8529
-      - ARANGO_USERNAME=root
-      - ARANGO_PASSWORD=password
+      - MONGO_URL=mongodb://root:password@mongo:27017/?ssl=false
+      - REDIS_URL=redis://redis:6379
+      - ENABLE_CACHING=1
+    ports:
+      - 3000:3000
     depends_on: 
-      - arangodb
+      - mongo
+      - redis
+
+  
