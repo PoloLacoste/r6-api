@@ -1,9 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { R6Service } from 'src/services/r6.service';
 import { PlayerStats } from 'src/models/player-stats';
 
 @Controller('stats')
+@ApiTags('Stats')
 export class StatsController {
   
   constructor(private readonly r6Service: R6Service) {}

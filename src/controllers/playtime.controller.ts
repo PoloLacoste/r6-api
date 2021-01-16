@@ -1,9 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { R6Service } from 'src/services/r6.service';
 import { PlayerPlaytime } from 'src/models/player-playtime';
 
 @Controller('playtime')
+@ApiTags('Playtime')
 export class PlaytimeController {
   
   constructor(private readonly r6Service: R6Service) {}
