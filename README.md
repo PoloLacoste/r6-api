@@ -233,18 +233,18 @@ Gets general stats for a player.
 {
   "id": "be3313d6-d443-4eae-818f-bb7f56837781",
   "pvp": {
-    "weapons": {Object},
-    "operators": {Object},
-    "general": {Object},
-    "modes": {Object},
-    "queue": {Object},
+    "weapons": {},
+    "operators": {},
+    "general": {},
+    "modes": {},
+    "queue": {},
   },
   "pve": {
-    "weapons": {Object},
-    "operators": {Object},
-    "general": {Object},
-    "modes": {Object},
-    "types": {Object},
+    "weapons": {},
+    "operators": {},
+    "general": {},
+    "modes": {},
+    "types": {},
   }
 }
 ```
