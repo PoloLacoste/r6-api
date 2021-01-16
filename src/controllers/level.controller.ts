@@ -1,9 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { R6Service } from 'src/services/r6.service';
 import { PlayerLevel } from 'src/models/player-level';
 
 @Controller("level")
+@ApiTags('Level')
 export class LevelController {
   constructor(private readonly r6Service: R6Service) { }
 
