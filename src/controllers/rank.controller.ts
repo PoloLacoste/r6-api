@@ -36,7 +36,6 @@ export class RankController {
   }
 
   @Get('username/:username')
-  @Get('username/:username')
   @ApiOperation({
     description: 'Get seasonal stats of a player by his username',
   })
