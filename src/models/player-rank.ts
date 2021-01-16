@@ -129,5 +129,5 @@ export class PlayerRank {
       }
     }
   })
-  seasons: Map<string, Season>;
+  seasons: { [key: string]: Season };
 }
