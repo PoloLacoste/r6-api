@@ -146,7 +146,7 @@ Gets the playtime of a player.
 
 ## Get rank
 
-Gets seasonal stats for a player.
+Gets seasonal stats of a player.
 
 Return all the 
 
@@ -214,7 +214,7 @@ Return all the
 
 ## Get stats
 
-Gets general stats for a player.
+Gets general stats of a player.
 
 **URLS** : 
 - `/{platform}/stats/{id}`
