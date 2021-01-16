@@ -31,8 +31,7 @@ export class IdController {
     description: 'Id of the player',
     type: PlayerId
   })
-  async getId(
-    @Param() params: PlatformUsername): Promise<PlayerId> {
+  async getId(@Param() params: PlatformUsername): Promise<PlayerId> {
     return {
       'id': await this.r6Service.getId(params.platform, params.username)
     };
