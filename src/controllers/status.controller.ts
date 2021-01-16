@@ -11,11 +11,11 @@ export class StatusController {
 
   @Get()
   @ApiOperation({
-    description: 'Get the status of all servers',
+    description: 'Get Rainbow Six Siege servers status',
   })
   @ApiResponse({
     status: 200,
-    description: 'Status of all servers',
+    description: 'Rainbow Six Siege servers status',
     type: ServerStatus
   })
   async getServersStatus(): Promise<ServerStatus> {
