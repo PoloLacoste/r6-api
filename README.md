@@ -68,6 +68,8 @@ services:
 
 # HTTP API
 
+An swagger documentation is available at the root of the server.
+
 ## Get id
 
 Gets the id of a player from their username.
