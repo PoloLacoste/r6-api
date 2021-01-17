@@ -324,3 +324,4 @@ Gets the username of a player from their id.
 
 * More stats routes, split data in routes
 * Specify which season stats we want in rank route
+* Tests 😭
