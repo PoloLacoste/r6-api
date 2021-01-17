@@ -1,5 +1,7 @@
 # Rainbow Six Siege API
 
+![R6-Api CI](https://github.com/PoloLacoste/r6-api/workflows/R6-Api%20CI/badge.svg?branch=main)
+
 REST API version of [r6api.js](https://github.com/danielwerg/r6api.js) using Docker.
 The data is cached (expire after 1 minute) if you are using redis and mongodb.
 
