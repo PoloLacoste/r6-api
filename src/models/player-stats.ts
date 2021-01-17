@@ -1,135 +1,403 @@
-export interface PlayerStats {
-    id:  string;
-    pvp: Pvp;
-    pve: Pve;
+import { ApiExtraModels, ApiProperty, getSchemaPath } from "@nestjs/swagger";
+
+export class Casual {
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  kills: number;
+
+  @ApiProperty()
+  deaths: number;
+
+  @ApiProperty()
+  wins: number;
+
+  @ApiProperty()
+  losses: number;
+
+  @ApiProperty()
+  matches: number;
+
+  @ApiProperty()
+  playtime: number;
 }
 
-export interface Pve {
-    weapons:   { [key: string]: Weapon };
-    operators: { [key: string]: Operator };
-    general:   { [key: string]: number };
-    modes:     PveModes;
-    types:     Types;
+export class Queue {
+
+  @ApiProperty()
+  casual: Casual;
+
+  @ApiProperty()
+  ranked: Casual;
+
+  @ApiProperty()
+  discovery: Casual;
 }
 
-export interface PveModes {
-    classic:    ClassicClass;
-    protection: ClassicClass;
-    extraction: ClassicClass;
-    bomb:       ClassicClass;
+export class Secure {
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  wins: number;
+
+  @ApiProperty()
+  losses: number;
+
+  @ApiProperty()
+  matches: number;
+
+  @ApiProperty()
+  bestScore: number;
+
+  @ApiProperty()
+  playtime: number;
+
+  @ApiProperty()
+  secured: number;
+
+  @ApiProperty()
+  defended: number;
+
+  @ApiProperty()
+  contested: number;
 }
 
-export interface ClassicClass {
-    wins:      number;
-    losses:    number;
-    matches:   number;
-    bestScore: number;
+export class Hostage {
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  wins: number;
+
+  @ApiProperty()
+  losses: number;
+
+  @ApiProperty()
+  matches: number;
+
+  @ApiProperty()
+  bestScore: number;
+
+  @ApiProperty()
+  playtime: number;
+
+  @ApiProperty()
+  hostageRescued?: number;
+
+  @ApiProperty()
+  hostageDefended?: number;
 }
 
-export interface Operator {
-    name:       string;
-    role:       Role;
-    badge:      string;
-    ctu:        string;
-    kills:      number;
-    deaths:     number;
-    wins:       number;
-    losses:     number;
-    headshots:  number;
-    meleeKills: number;
-    dbno:       number;
-    xp:         number;
-    playtime:   number;
-    gadget:     Gadget[] | null;
+export class PvpModes {
+
+  @ApiProperty()
+  bomb: Hostage;
+
+  @ApiProperty()
+  secure: Secure;
+
+  @ApiProperty()
+  hostage: Hostage;
 }
 
-export interface Gadget {
-    name:  string;
-    value: number;
+export class General {
+
+  @ApiProperty()
+  kills: number;
+
+  @ApiProperty()
+  deaths: number;
+
+  @ApiProperty()
+  headshots: number;
+
+  @ApiProperty()
+  bulletsFired: number;
+
+  @ApiProperty()
+  bulletsConnected: number;
+
+  @ApiProperty()
+  timesChosen: number;
+
+  @ApiProperty()
+  name?: string;
+
+  @ApiProperty()
+  image?: string;
+}
+
+export class Weapon {
+
+  @ApiProperty()
+  general: General;
+
+  @ApiProperty()
+  list: General[];
+}
+
+export class Operator {
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  role: Role;
+
+  @ApiProperty()
+  badge: string;
+
+  @ApiProperty()
+  ctu: string;
+
+  @ApiProperty()
+  kills: number;
+
+  @ApiProperty()
+  deaths: number;
+
+  @ApiProperty()
+  wins: number;
+
+  @ApiProperty()
+  losses: number;
+
+  @ApiProperty()
+  headshots: number;
+
+  @ApiProperty()
+  meleeKills: number;
+
+  @ApiProperty()
+  dbno: number;
+
+  @ApiProperty()
+  xp: number;
+
+  @ApiProperty()
+  playtime: number;
+
+  @ApiProperty()
+  gadget: Gadget[] | null;
+}
+
+export class GeneralStats {
+
+  @ApiProperty()
+  bulletsFired:           number;
+  
+  @ApiProperty()
+  bulletsConnected:       number;
+  
+  @ApiProperty()
+  kills:                  number;
+  
+  @ApiProperty()
+  deaths:                 number;
+  
+  @ApiProperty()
+  assists:                number;
+  
+  @ApiProperty()
+  headshots:              number;
+  
+  @ApiProperty()
+  meleeKills:             number;
+  
+  @ApiProperty()
+  penetrationKills:       number;
+  
+  @ApiProperty()
+  blindKills:             number;
+  
+  @ApiProperty()
+  dbno:                   number;
+  
+  @ApiProperty()
+  dbnoAssists:            number;
+  
+  @ApiProperty()
+  revives:                number;
+  
+  @ApiProperty()
+  matches:                number;
+  
+  @ApiProperty()
+  wins:                   number;
+  
+  @ApiProperty()
+  losses:                 number;
+  
+  @ApiProperty()
+  playtime:               number;
+  
+  @ApiProperty()
+  gadgetsDestroyed:       number;
+  
+  @ApiProperty()
+  rappelBreaches:         number;
+  
+  @ApiProperty()
+  barricadesDeployed:     number;
+  
+  @ApiProperty()
+  reinforcementsDeployed: number;
+  
+  @ApiProperty()
+  suicides:               number;
+  
+  @ApiProperty()
+  distanceTravelled:      number;
+  
+  @ApiProperty()
+  customGamesPlaytime:    number;
+}
+
+@ApiExtraModels(Weapon, Operator)
+export class Pvp {
+
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: {
+      items: {
+        $ref: getSchemaPath(Weapon)
+      }
+    }
+  })
+  weapons: { [key: string]: Weapon };
+
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: {
+      items: {
+        $ref: getSchemaPath(Operator)
+      }
+    }
+  })
+  operators: { [key: string]: Operator };
+
+  @ApiProperty()
+  general: GeneralStats;
+
+  @ApiProperty()
+  modes: PvpModes;
+
+  @ApiProperty()
+  queue: Queue;
+}
+
+export class Coop {
+
+  @ApiProperty()
+  normal: number;
+
+  @ApiProperty()
+  hard: number;
+
+  @ApiProperty()
+  realistic: number;
+}
+
+export class Types {
+
+  @ApiProperty()
+  local: Coop;
+
+  @ApiProperty()
+  coop: Coop;
 }
 
 export enum Role {
-    Attacker = "attacker",
-    Defender = "defender",
-    Recruit = "recruit",
+  Attacker = "attacker",
+  Defender = "defender",
+  Recruit = "recruit",
 }
 
-export interface Types {
-    local: Coop;
-    coop:  Coop;
+export class Gadget {
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  value: number;
 }
 
-export interface Coop {
-    normal:    number;
-    hard:      number;
-    realistic: number;
+export class Classic {
+
+  @ApiProperty()
+  wins: number;
+
+  @ApiProperty()
+  losses: number;
+
+  @ApiProperty()
+  matches: number;
+
+  @ApiProperty()
+  bestScore: number;
 }
 
-export interface Weapon {
-    general: General;
-    list:    General[];
+export class PveModes {
+
+  @ApiProperty()
+  classic: Classic;
+
+  @ApiProperty()
+  protection: Classic;
+
+  @ApiProperty()
+  extraction: Classic;
+
+  @ApiProperty()
+  bomb: Classic;
 }
 
-export interface General {
-    kills:            number;
-    deaths:           number;
-    headshots:        number;
-    bulletsFired:     number;
-    bulletsConnected: number;
-    timesChosen:      number;
-    name?:            string;
-    image?:           string;
+@ApiExtraModels(Weapon, Operator)
+export class Pve {
+
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: {
+      items: {
+        $ref: getSchemaPath(Weapon)
+      }
+    }
+  })
+  weapons: { [key: string]: Weapon };
+
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: {
+      items: {
+        $ref: getSchemaPath(Operator)
+      }
+    }
+  })
+  operators: { [key: string]: Operator };
+
+  @ApiProperty()
+  general: GeneralStats;
+
+  @ApiProperty()
+  modes: PveModes;
+
+  @ApiProperty()
+  types: Types;
 }
 
-export interface Pvp {
-    weapons:   { [key: string]: Weapon };
-    operators: { [key: string]: Operator };
-    general:   { [key: string]: number };
-    modes:     PvpModes;
-    queue:     Queue;
-}
+export class PlayerStats {
 
-export interface PvpModes {
-    bomb:    HostageClass;
-    secure:  Secure;
-    hostage: HostageClass;
-}
+  @ApiProperty()
+  id: string;
 
-export interface HostageClass {
-    name:             string;
-    wins:             number;
-    losses:           number;
-    matches:          number;
-    bestScore:        number;
-    playtime:         number;
-    hostageRescued?:  number;
-    hostageDefended?: number;
-}
+  @ApiProperty()
+  pvp: Pvp;
 
-export interface Secure {
-    name:      string;
-    wins:      number;
-    losses:    number;
-    matches:   number;
-    bestScore: number;
-    playtime:  number;
-    secured:   number;
-    defended:  number;
-    contested: number;
-}
-
-export interface Queue {
-    casual:    Casual;
-    ranked:    Casual;
-    discovery: Casual;
-}
-
-export interface Casual {
-    name:     string;
-    kills:    number;
-    deaths:   number;
-    wins:     number;
-    losses:   number;
-    matches:  number;
-    playtime: number;
+  @ApiProperty()
+  pve: Pve;
 }
