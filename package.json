@@ -26,6 +26,7 @@
     "@nestjs/platform-fastify": "^7.6.5",
     "@nestjs/swagger": "^4.7.11",
     "@types/mongodb": "^3.6.3",
+    "class-validator": "^0.13.1",
     "cron-validate": "^1.4.2",
     "dotenv": "^8.2.0",
     "fastify-swagger": "^3.5.0",
