@@ -319,3 +319,8 @@ Gets the username of a player from their id.
   "platform": "uplay"
 }
 ```
+
+# TODO
+
+* More stats routes, split data in routes
+* Specify which season stats we want in rank route
