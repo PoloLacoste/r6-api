@@ -32,9 +32,11 @@ export class R6Service {
       !this.databaseService.isOnline()) {
       return await getData();
     }
-
+    
+    // create a cache id for each collection of each player
+    const cacheId = `${id}_${collection}`;
     const now = new Date().getTime();
-    let cachedTimestamp = await this.cacheService.getExpiration(id) ?? -1;
+    let cachedTimestamp = await this.cacheService.getExpiration(cacheId) ?? -1;
 
     const notExpired = cachedTimestamp + R6Service.DATA_EXPIRATION > now;
 
