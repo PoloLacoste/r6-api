@@ -97,8 +97,8 @@ Gets the id of a player from their username.
 Gets the level, xp and alpha pack drop chance of a player.
 
 **URLS** : 
-- `/{platform}/level/{id}`
-- `/{platform}/level/{username}`
+- `/{platform}/level/id/{id}`
+- `/{platform}/level/username/{username}`
 
 **Method** : `GET`
 
@@ -126,8 +126,8 @@ Gets the level, xp and alpha pack drop chance of a player.
 Gets the playtime of a player.
 
 **URLS** : 
-- `/{platform}/playtime/{id}`
-- `/{platform}/playtime/{username}`
+- `/{platform}/playtime/id/{id}`
+- `/{platform}/playtime/username/{username}`
 
 **Method** : `GET`
 
@@ -155,8 +155,8 @@ Gets seasonal stats of a player.
 Return all the 
 
 **URLS** : 
-- `/{platform}/rank/{id}`
-- `/{platform}/rank/{username}`
+- `/{platform}/rank/id/{id}`
+- `/{platform}/rank/username/{username}`
 
 **Method** : `GET`
 
@@ -221,8 +221,8 @@ Return all the
 Gets general stats of a player.
 
 **URLS** : 
-- `/{platform}/stats/{id}`
-- `/{platform}/stats/{username}`
+- `/{platform}/stats/id/{id}`
+- `/{platform}/stats/username/{username}`
 
 **Method** : `GET`
 
