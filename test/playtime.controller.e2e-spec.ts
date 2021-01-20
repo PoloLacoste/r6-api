@@ -5,9 +5,9 @@ import { INestApplication } from '@nestjs/common';
 import { AppModule } from 'src/app.module';
 import { R6Service } from 'src/services/r6.service';
 
-import { platform, username, level, id } from './data';
+import { platform, username, playtime, id } from './data';
 
-describe('Level controller', () => {
+describe('Playtime controller', () => {
   let app: INestApplication;
   let r6Service: R6Service;
 
@@ -25,23 +25,23 @@ describe('Level controller', () => {
     await app.init();
   });
 
-  describe('get level', () => {
-    it('should return level by id', async () => {
-      jest.spyOn(r6Service, 'getLevelById').mockImplementation(async () => level);
+  describe('get Playtime', () => {
+    it('should return Playtime by id', async () => {
+      jest.spyOn(r6Service, 'getPlaytimeById').mockImplementation(async () => playtime);
 
       return request(app.getHttpServer())
-        .get(`/${platform}/level/id/${id}`)
+        .get(`/${platform}/playtime/id/${id}`)
         .expect(200)
-        .expect(level);
+        .expect(playtime);
     });
 
-    it('should return level by username', async () => {
-      jest.spyOn(r6Service, 'getLevelByUsername').mockImplementation(async () => level);
+    it('should return Playtime by username', async () => {
+      jest.spyOn(r6Service, 'getPlaytimeByUsername').mockImplementation(async () => playtime);
 
       return request(app.getHttpServer())
-        .get(`/${platform}/level/username/${username}`)
+        .get(`/${platform}/playtime/username/${username}`)
         .expect(200)
-        .expect(level);
+        .expect(playtime);
     });
   });
 });
