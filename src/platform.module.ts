@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { ServicesModule } from './services/services.module';
+import { ServicesModule } from './services.module';
 
 import { IdController } from './controllers/id.controller';
 import { LevelController } from './controllers/level.controller';
