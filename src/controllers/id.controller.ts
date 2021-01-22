@@ -1,7 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { R6Service, PlayerId } from 'r6-api-cacher';
 
-import { R6Service, PlatformType, PlatformUsername, PlayerId } from 'r6-api-cacher';
+import { PlatformType } from 'src/models/platform-type';
+import { PlatformUsername } from 'src/models/platform-username';
 
 @Controller('id')
 @ApiTags('Id')
