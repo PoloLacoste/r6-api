@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { RouterModule, Routes } from 'nest-router';
 
-
 import { PlatformModule } from './platform.module';
-import { ServicesModule } from './services/services.module';
+import { ServicesModule } from './services.module';
 
 import { StatusController } from './controllers/status.controller';
 
