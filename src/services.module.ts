@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { CacheService, Database, MongoDatabase, R6Service } from 'r6-cacher';
+import { CacheService, Database, MongoDatabase, R6Service } from 'r6-api-caching';
 
 const cacheService = new CacheService(process.env.REDIS_URL);
 const database = new MongoDatabase(process.env.MONGO_URL);

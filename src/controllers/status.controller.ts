@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { R6Service, ServerStatus } from 'r6-cacher';
+import { R6Service, ServerStatus } from 'r6-api-caching';
 
 @Controller("status")
 @ApiTags('Servers status')
