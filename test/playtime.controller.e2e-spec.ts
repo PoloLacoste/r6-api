@@ -1,10 +1,9 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { R6Service } from 'r6-cacher';
 
 import { AppModule } from 'src/app.module';
-import { R6Service } from 'src/services/r6.service';
-
 import { platform, username, playtime, id } from './data';
 
 describe('Playtime controller', () => {
