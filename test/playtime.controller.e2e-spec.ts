@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { R6Service } from 'r6-cacher';
+import { R6Service } from 'r6-api-caching';
 
 import { AppModule } from 'src/app.module';
 import { platform, username, playtime, id } from './data';
