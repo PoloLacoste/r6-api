@@ -17,15 +17,15 @@ const r6Service = new R6Service(process.env.EMAIL, process.env.PASSWORD, {
   providers: [
     {
       provide: CacheService,
-      useFactory: () => cacheService
+      useValue: cacheService
     },
     {
       provide: Database,
-      useFactory: () => database
+      useValue: database
     },
     {
       provide: R6Service,
-      useFactory: () => r6Service
+      useValue: r6Service
     }
   ],
   exports: [
