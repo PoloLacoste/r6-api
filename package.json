@@ -29,7 +29,7 @@
     "dotenv": "^8.2.0",
     "fastify-swagger": "^3.5.0",
     "nest-router": "^1.0.9",
-    "r6-api-caching": "^1.0.3",
+    "r6-api-caching": "^1.0.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3"
