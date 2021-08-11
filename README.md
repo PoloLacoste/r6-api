@@ -141,10 +141,16 @@ Gets the playtime of a player.
 ```json
 {
   "id": "be3313d6-d443-4eae-818f-bb7f56837781",
-  "general": 6248491,
-  "ranked": 5608031,
-  "casual": 499425,
-  "discovery": 141035
+  "pvp": {
+    "general": 6343064,
+    "ranked": 5699426,
+    "casual": 499943,
+    "custom": 0,
+    "other": 143695
+  },
+  "pve": {
+    "general": 989429
+  }
 }
 ```
 
