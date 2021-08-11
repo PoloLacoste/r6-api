@@ -6,7 +6,7 @@ import { PlatformType } from 'src/models/platform-type';
 import { PlatformId } from 'src/models/platform-id';
 import { PlatformUsername } from 'src/models/platform-username';
 
-@Controller("level")
+@Controller('level')
 @ApiTags('Level')
 export class LevelController {
   constructor(private readonly r6Service: R6Service) { }

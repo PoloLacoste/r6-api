@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { R6Service, PlayerStats } from 'r6-api-caching';
+import { R6Service, IGetStats } from 'r6-api-caching';
 
 import { PlatformType } from 'src/models/platform-type';
 import { PlatformId } from 'src/models/platform-id';
@@ -29,9 +29,8 @@ export class StatsController {
   @ApiResponse({
     status: 200,
     description: 'General stats of a player',
-    type: PlayerStats
   })
-  async getStatsById(@Param() params: PlatformId): Promise<PlayerStats> {
+  async getStatsById(@Param() params: PlatformId): Promise<IGetStats> {
     return await this.r6Service.getStatsById(params.platform, params.id);
   }
 
@@ -52,9 +51,8 @@ export class StatsController {
   @ApiResponse({
     status: 200,
     description: 'General stats of a player',
-    type: PlayerStats
   })
-  async getStatsByUsername(@Param() params: PlatformUsername): Promise<PlayerStats> {
+  async getStatsByUsername(@Param() params: PlatformUsername): Promise<IGetStats> {
     return await this.r6Service.getStatsByUsername(params.platform, params.username);
   }
 }
