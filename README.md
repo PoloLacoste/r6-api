@@ -311,7 +311,7 @@ Gets Rainbow Six Siege servers status.
 
 Gets the username of a player from their id.
 
-**URL** : `/{platform}/level/{id}`
+**URL** : `/{platform}/username/{id}`
 
 **Method** : `GET`
 
