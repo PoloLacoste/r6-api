@@ -3,7 +3,7 @@
 ![R6-Api CI](https://github.com/PoloLacoste/r6-api/workflows/R6-Api%20CI/badge.svg?branch=main)
 
 REST API version of [r6api.js](https://github.com/danielwerg/r6api.js) using Docker.
-The data is cached (expire after 1 minute) if you are using redis and mongodb.
+The data can be cached if you want to use redis and mongodb.
 
 Docker image avalaible at [r6-api](https://hub.docker.com/repository/docker/pololacoste/r6-api).
 
@@ -70,7 +70,7 @@ services:
 
 # HTTP API
 
-An swagger documentation is available at the root of the server.
+A swagger documentation is available on the `/` endpoint.
 
 ## Get id
 
@@ -333,5 +333,4 @@ Gets the username of a player from their id.
 # TODO
 
 * More stats routes, split data in routes
-* Specify which season stats we want in rank route
 * Tests 😭
