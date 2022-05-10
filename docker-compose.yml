@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
   mongo:
-    image: mongo:4.4.3-bionic
+    image: mongo:5.0.8-focal
     container_name: mongo
     restart: always
     environment:
@@ -11,7 +11,7 @@ services:
       MONGO_INITDB_DATABASE: r6
   
   redis:
-    image: redis:6.0.9-alpine
+    image: redis:7.0.0-alpine
     container_name: redis
     restart: always
 
