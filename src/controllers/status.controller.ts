@@ -14,6 +14,8 @@ export class StatusController {
   @ApiResponse({
     status: 200,
     description: 'Rainbow Six Siege servers status',
+    type: ServerStatus,
+    isArray: true,
   })
   async getServersStatus(): Promise<ServerStatus[]> {
     return await this.r6Service.getServersStatus();
