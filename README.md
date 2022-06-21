@@ -60,7 +60,7 @@ services:
       - PORT=3000
       - MONGO_URL=mongodb://root:password@mongo:27017/?ssl=false
       - REDIS_URL=redis://redis:6379
-      - ENABLE_CACHING=1
+      - CACHING=true
     ports:
       - 3000:3000
     depends_on: 
