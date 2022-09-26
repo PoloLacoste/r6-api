@@ -1,7 +1,7 @@
 {
   "name": "r6-api",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Rainbow 6 siege api",
   "license": "MIT",
   "scripts": {
@@ -29,7 +29,7 @@
     "dotenv": "^10.0.0",
     "fastify-swagger": "^5.2.0",
     "nest-router": "^1.0.9",
-    "r6-api-caching": "^1.5.0",
+    "r6-api-caching": "^1.7.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0"

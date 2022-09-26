@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 - 10/05/2021
+
+Updated r6-api-caching version.
+Fixing security issues.
+
 ## 1.4.0 - 10/05/2021
 
 Updated r6-api-caching version.
