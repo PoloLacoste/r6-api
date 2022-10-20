@@ -12,7 +12,7 @@ Docker image avalaible at [r6-api](https://hub.docker.com/repository/docker/polo
 ## Docker
 
 ```bash
-docker run --name r6-api -e EMAIL=EMAIL -e PASSWORD=PASSWORD -e PORT=3000 -p 3000:3000 -d pololacoste/r6-api
+docker run --name r6-api -e EMAIL=UBISOFT_EMAIL -e PASSWORD=UBISOFT_PASSWORD -e PORT=3000 -p 3000:3000 -d pololacoste/r6-api
 ```
 
 ## Docker compose
@@ -23,8 +23,8 @@ r6-api:
   image: pololacoste/r6-api
   container_name: r6-api
   environment: 
-    - EMAIL=${EMAIL}
-    - PASSWORD=${PASSWORD}
+    - EMAIL=${UBISOFT_EMAIL}
+    - PASSWORD=${UBISOFT_PASSWORD}
     - PORT=3000
   ports:
     - 3000:3000
