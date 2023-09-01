@@ -1,7 +1,7 @@
 {
   "name": "r6-api",
   "private": true,
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Rainbow 6 siege api",
   "license": "MIT",
   "scripts": {
