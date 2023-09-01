@@ -1,17 +1,21 @@
 # Changelog
 
-## 1.5.0 - 10/05/2021
+## 1.5.1 - 01/09/2023
+
+Bump dependencies
+
+## 1.5.0 - 10/05/2022
 
 Updated r6-api-caching version.
 Fixing security issues.
 
-## 1.4.0 - 10/05/2021
+## 1.4.0 - 10/05/2022
 
 Updated r6-api-caching version.
 Upgrading deprecated dependencies.
 Fixing security issues.
 
-## 1.0.0 - 27/01/2021
+## 1.0.0 - 29/01/2021
 
 Updated r6-api-caching version (fixed caching in mongodb).
 
